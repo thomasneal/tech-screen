@@ -1,4 +1,14 @@
 import Idea from "./idea";
+import getIdeas from "@/pages/api/ideas";
+
+// export async function getStaticProps() {
+//   const ideas = getIdeas();
+//   return {
+//     props: {
+//       ideas,
+//     },
+//   };
+// }
 
 export default function Ideas() {
   return (
