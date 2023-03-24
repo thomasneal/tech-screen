@@ -29,5 +29,15 @@ export default function getIdeas(
       description: 'Write an app or integration that will easily let you throw any TikToks you want into a playlist for sharing or watching again.',
       lastUpdated: "23.02.2023"
     },
+    { 
+      title: 'Hats for Squirrels',
+      description: 'No one has does that one, right?',
+      lastUpdated: "12.02.2023"
+    },
+    {
+      title: 'Slash Server Reboot',
+      description: 'A Cyperpunk graphic novel where coding is shown in a real way',
+      lastUpdated: "07.11.2022"
+    },
   ])
 }

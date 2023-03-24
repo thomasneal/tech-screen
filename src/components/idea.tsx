@@ -46,7 +46,7 @@ export default function Idea(props: any) {
   }
 
   return (
-    <Card variant="outlined" sx={{ minWidth: 275 }}>
+    <Card variant="outlined" sx={{ width: 275, height: 275 }}>
       <CardContent>
         <Typography variant="h2" sx={{ fontSize: 20 }} gutterBottom onClick={editTitle => setEditTitle(true)}>
           {editTitle ? <TitleInput title={title} /> : title}

@@ -1,19 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Idea from "./idea";
 import getIdeas from "@/pages/api/ideas";
 import { Button } from "@mui/material";
 
-// export async function getStaticProps() {
-//   const ideas = getIdeas("/api/ideas", );
-//   return {
-//     props: {
-//       ideas,
-//     },
-//   };
-// }
-
 export default function Ideas() {
   const [creatingNewIdea, setCreatingNewIdea] = useState(false);
+  const [ideas, setIdeas] = useState([]);
+
+  useEffect(() => {
+    fetch('/api/ideas')
+    .then((res) => res.json())
+    .then((data) => {
+     setIdeas(data);
+    });
+  }, [])
 
   function NewIdea() {
     return (
@@ -29,11 +29,9 @@ export default function Ideas() {
 
   return (
     <>
-      <Idea title="Card A" description="Card A's description" lastUpdated="23.03.2023" />
-      <Idea title="Card B" description="Card B's description" lastUpdated="22.03.2023" />
-      <Idea title="Card C" description="Card C's description" lastUpdated="27.02.2023" />
-      <Idea title="Card D" description="Card D's description" lastUpdated="13.03.2023" />
-      <Idea title="Card E" description="Card E's description" lastUpdated="18.03.2023" />
+      {ideas.map(({title, description, lastUpdated}) => (
+        <Idea key={title} title={title} description={description} lastUpdated={lastUpdated} />
+      ))}
       {creatingNewIdea ? <NewIdea /> : ""}
       <Button variant="contained" onClick={handleNewIdea}>New Idea</Button>
     </>
