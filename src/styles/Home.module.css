@@ -6,8 +6,9 @@
 .ideasContainer {
   display: flex;
   flex-wrap: wrap;
+  gap: 1em;
   row-gap: 2rem;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
 }
 

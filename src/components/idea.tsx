@@ -1,21 +1,18 @@
 import { SyntheticEvent, useState } from 'react';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
+import { Button, Card, CardActions, CardContent, Input, Typography, TextField } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import Typography from '@mui/material/Typography';
 
 export default function Idea(props: any) {
   const [title, setTitle] = useState(props.title);
   const [editTitle, setEditTitle] = useState(false);
   const [desc, setDesc] = useState(props.description);
   const [editDesc, setEditDesc] = useState(false);
+  const [wordCount, setWordCount] = useState(0);
 
   function TitleInput(props: any) {
     return (
       <>
-      <input type="text" name="title" onBlur={(e) => updateTitle(e.target.value)} defaultValue={props.title} />
+      <Input type="text" name="title" onBlur={(e) => updateTitle(e.target.value)} defaultValue={props.title} />
       </>
     );
   }
@@ -23,9 +20,15 @@ export default function Idea(props: any) {
   function DescriptionInput(props: any) {
     return (
       <>
-      <textarea name="description" onBlur={(e) => updateDesc(e.target.value)} defaultValue={props.desc} />
+      <TextField name="description" onBlur={(e) => updateDesc(e.target.value)} defaultValue={props.desc} multiline />
       </>
     );
+  }
+
+  const checkWordCount = (val: any) => {
+    console.log("count", val.length);
+    setWordCount(val);
+    
   }
 
   const updateTitle = (newTitle: string) => {
@@ -36,6 +39,10 @@ export default function Idea(props: any) {
   const updateDesc = (newDesc: string) => {
     setDesc(newDesc);
     setEditDesc(false);
+  }
+
+  const deleteIdea = () => {
+   console.log("Delete this idea!");
   }
 
   return (
@@ -52,7 +59,7 @@ export default function Idea(props: any) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button variant="outlined" startIcon={<DeleteIcon />}>
+        <Button variant="outlined" startIcon={<DeleteIcon />} onClick={deleteIdea}>
           Delete
         </Button>
       </CardActions>
