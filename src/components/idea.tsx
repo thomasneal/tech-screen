@@ -1,8 +1,11 @@
 import { SyntheticEvent, useState } from 'react';
 import { Button, Card, CardActions, CardContent, Input, Typography, TextField } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import IdeaProps from '@/interfaces/Idea';
+import { formatRelativeTime } from "../utils/helpers";
 
-export default function Idea(props: any) {
+
+export default function Idea(props: IdeaProps) {
   const [title, setTitle] = useState(props.title);
   const [editTitle, setEditTitle] = useState(false);
   const [desc, setDesc] = useState(props.description);
@@ -12,7 +15,7 @@ export default function Idea(props: any) {
   function TitleInput(props: any) {
     return (
       <>
-      <Input type="text" name="title" onBlur={(e) => updateTitle(e.target.value)} defaultValue={props.title} />
+      <Input autoFocus={true} type="text" name="title" onBlur={(e) => updateTitle(e.target.value)} defaultValue={props.title} />
       </>
     );
   }
@@ -41,8 +44,9 @@ export default function Idea(props: any) {
     setEditDesc(false);
   }
 
-  const deleteIdea = () => {
+  const deleteIdea = (id: string) => {
    console.log("Delete this idea!");
+   return id;
   }
 
   return (
@@ -55,11 +59,13 @@ export default function Idea(props: any) {
         {editDesc ? <DescriptionInput desc={desc} /> : desc}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Last Updated: {props.lastUpdated}
+          Last Updated: {formatRelativeTime(props.lastUpdated)}
         </Typography>
       </CardContent>
       <CardActions>
-        <Button variant="outlined" startIcon={<DeleteIcon />} onClick={deleteIdea}>
+        <Button
+          variant="outlined" startIcon={<DeleteIcon />}
+          onClick={(e) => deleteIdea(props.id)}>
           Delete
         </Button>
       </CardActions>
