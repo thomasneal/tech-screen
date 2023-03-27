@@ -1,4 +1,4 @@
-import { SyntheticEvent, useState } from 'react';
+import { useState } from 'react';
 import { Button, Card, CardActions, CardContent, Input, Typography, TextField } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import  { Idea } from '@/types/Idea';
