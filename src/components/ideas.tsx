@@ -1,35 +1,25 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {v4 as uuidv4} from 'uuid';
 import { Button } from "@mui/material";
-import Idea from "./idea";
-import IdeaProps from "@/interfaces/Idea";
-import getIdeas from "@/pages/api/ideas";
-import { formatRelativeTime } from "../utils/helpers";
+import { Idea } from "@/types/Idea";
+import IdeaCard from "./idea";
 
 
 export default function Ideas() {
   const [creatingNewIdea, setCreatingNewIdea] = useState(false);
-  const [newIdea, setNewIdea] = useState<IdeaProps>({
+  const [newIdea, setNewIdea] = useState<Idea>({
     id: uuidv4(),
     title: 'title',
     description: "description",
-    lastUpdated: new Date().toString()
+    lastUpdated: new Date().toString(),
   });
-  const [ideas, setIdeas] = useState<IdeaProps[]>([]);
-
-  useEffect(() => {
-    fetch('/api/ideas')
-    .then((res) => res.json())
-    .then((data) => {
-     //setIdeas(data);
-    });
-  }, [])
+  const [ideas, setIdeas] = useState<Idea[]>([]);
 
   function NewIdea() {
     
     return (
       <>
-       <Idea key={newIdea.id} id={newIdea.id} title={newIdea.title} description={newIdea.description} lastUpdated={formatRelativeTime(newIdea.lastUpdated)}  />
+       <IdeaCard key={newIdea.id} idea={newIdea} handleDelete={() => handleDelete(newIdea.id)} />
       </> 
     );
   }
@@ -38,18 +28,23 @@ export default function Ideas() {
     setCreatingNewIdea(true);
     setIdeas(ideas => [...ideas, newIdea]);
     setNewIdea({
-       id: uuidv4(),
-    title: 'title',
-    description: "description",
-    lastUpdated: new Date().toString()
+      id: uuidv4(),
+      title: 'title',
+      description: "description",
+      lastUpdated: new Date().toString()
     });
     setCreatingNewIdea(false);
   }
 
+  const handleDelete = (id: string) => {
+    const filteredIdeas = ideas.filter(i => i.id !== id);
+    setIdeas(filteredIdeas);
+   }
+
   return (
     <>
-      {ideas && ideas.map(({id, title, description, lastUpdated}) => (
-        <Idea key={id} id={id} title={title} description={description} lastUpdated={lastUpdated} />
+      {ideas && ideas.map((idea) => (
+        <IdeaCard key={idea.id} idea={idea} handleDelete={handleDelete} />
       ))}
       {creatingNewIdea ? <NewIdea /> : ""}
       <Button variant="contained" onClick={handleNewIdea}>New Idea</Button>

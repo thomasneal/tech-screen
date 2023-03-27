@@ -1,21 +1,25 @@
 import { SyntheticEvent, useState } from 'react';
 import { Button, Card, CardActions, CardContent, Input, Typography, TextField } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import IdeaProps from '@/interfaces/Idea';
+import  { Idea } from '@/types/Idea';
 import { formatRelativeTime } from "../utils/helpers";
 
+type IdeaProps = {
+  idea: Idea,
+  handleDelete: (id: string) => void
+}
 
-export default function Idea(props: IdeaProps) {
-  const [title, setTitle] = useState(props.title);
+export default function IdeaCard(props: IdeaProps) {
+  const [title, setTitle] = useState(props.idea.title);
   const [editTitle, setEditTitle] = useState(false);
-  const [desc, setDesc] = useState(props.description);
+  const [desc, setDesc] = useState(props.idea.description);
   const [editDesc, setEditDesc] = useState(false);
   const [wordCount, setWordCount] = useState(0);
 
   function TitleInput(props: any) {
     return (
       <>
-      <Input autoFocus={true} type="text" name="title" onBlur={(e) => updateTitle(e.target.value)} defaultValue={props.title} />
+      <Input autoFocus={true} type="text" name="title" onBlur={(e) => updateTitle(e.target.value)} defaultValue={title} />
       </>
     );
   }
@@ -44,11 +48,6 @@ export default function Idea(props: IdeaProps) {
     setEditDesc(false);
   }
 
-  const deleteIdea = (id: string) => {
-   console.log("Delete this idea!");
-   return id;
-  }
-
   return (
     <Card variant="outlined" sx={{ width: 275, height: 275 }}>
       <CardContent>
@@ -59,13 +58,13 @@ export default function Idea(props: IdeaProps) {
         {editDesc ? <DescriptionInput desc={desc} /> : desc}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Last Updated: {formatRelativeTime(props.lastUpdated)}
+          Last Updated: {formatRelativeTime(props.idea.lastUpdated)}
         </Typography>
       </CardContent>
       <CardActions>
         <Button
           variant="outlined" startIcon={<DeleteIcon />}
-          onClick={(e) => deleteIdea(props.id)}>
+          onClick={(e) => props.handleDelete(props.idea.id)}>
           Delete
         </Button>
       </CardActions>
