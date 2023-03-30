@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import {v4 as uuidv4} from 'uuid';
-import { Button } from "@mui/material";
+import { Button, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import { Idea } from "@/types/Idea";
 import IdeaCard from "./idea";
+import styles from "@/styles/Ideas.module.css";
 
 export default function Ideas() {
   const [ideasLoaded, setIdeasLoaded] = useState(false);
@@ -13,7 +14,7 @@ export default function Ideas() {
     description: "description",
     lastUpdated: new Date().toString(),
   });
-
+  const [sort, setSort] = useState("created");
   const [ideas, setIdeas] = useState<Idea[]>([]);
 
   useEffect(() => {
@@ -56,7 +57,7 @@ export default function Ideas() {
   const handleDelete = (id: string) => {
     const filteredIdeas = ideas.filter(i => i.id !== id);
     setIdeas(filteredIdeas);
-   }
+  }
 
    const handleUpdate = (id: string, title: string, description: string) => {
     
@@ -73,13 +74,42 @@ export default function Ideas() {
     setIdeas(updatedIdeas);
    }
 
+  const handleSort = (sort: string) => {
+    console.log("sort by: " + sort);
+    setSort(sort);
+    if (sort === 'alpha') {
+      console.log("alpha found");
+      setIdeas(ideas.sort((a, b) => (a.title < b.title) ? 1 : -1));
+    }
+    
+    // if (sort === 'alpha') {
+    //   console.log("alpha found");
+    //   setIdeas(ideas.sort((a, b) => (a.title < b.title) ? 1 : -1));
+    // }
+  }
+
   return (
-    <>
-      {ideas && ideas.map((idea) => (
-        <IdeaCard key={idea.id} idea={idea} handleDelete={handleDelete} handleUpdate={handleUpdate} />
-      ))}
-      {creatingNewIdea ? <NewIdea /> : ""}
+    <section>
+      <FormControl sx={{width: 150, display: 'block'}}>
+        <InputLabel id="sort-label">Sort</InputLabel>
+        <Select
+          labelId="sort-label"
+          id="sort"
+          value={sort}
+          label="Sort"
+          onChange={(e) => handleSort(e.target.value)}
+        >
+          <MenuItem value={"created"}>Date Created</MenuItem>
+          <MenuItem value={"alpha"}>Alphabetically</MenuItem>
+        </Select>
+      </FormControl>
+      <section className={styles.ideasContainer}>
+        {ideas && ideas.map((idea) => (
+          <IdeaCard key={idea.id} idea={idea} handleDelete={handleDelete} handleUpdate={handleUpdate} />
+        ))}
+        {creatingNewIdea ? <NewIdea /> : ""}
+      </section>
       <Button variant="contained" onClick={handleNewIdea}>New Idea</Button>
-    </>
+    </section>
   );
 }

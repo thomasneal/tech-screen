@@ -15,9 +15,7 @@ export default function Home() {
       </Head>
       <main className={styles.main}>
         <Typography variant="h1">Ideas</Typography>
-        <section className={styles.ideasContainer}>
-          <Ideas />
-        </section>
+        <Ideas />
       </main>
     </>
   )

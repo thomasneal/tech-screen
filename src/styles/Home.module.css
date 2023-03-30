@@ -3,12 +3,3 @@
   min-height: 100vh;
 }
 
-.ideasContainer {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1em;
-  row-gap: 2rem;
-  justify-content: flex-start;
-  align-items: center;
-} 
-
