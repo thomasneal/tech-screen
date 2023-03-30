@@ -26,11 +26,9 @@ export default function Ideas() {
   }, []);
 
   useEffect(() => {
-    console.log("effect called");
     if (ideasLoaded) {
       localStorage.setItem("ideas", JSON.stringify(ideas));
     }
-    console.log("effect ideas", ideas);
     
   }, [ideas, ideasLoaded]);
 
@@ -62,15 +60,17 @@ export default function Ideas() {
 
    const handleUpdate = (id: string, title: string, description: string) => {
     
-    const ideaIndex = ideas.findIndex(
+    const updatedIdeas = [...ideas];
+    const ideaToUpdate = updatedIdeas.find(
       (idea) => idea.id === id
     )
 
-    if (ideaIndex !== -1) {
-      ideas[ideaIndex] = { id: id, title: title, description: description, lastUpdated: new Date().toString()}
-    }
-    console.log("handleUpdate ideas", ideas);  
-    setIdeas(ideas);
+    if (ideaToUpdate) {
+      ideaToUpdate.title = title;
+      ideaToUpdate.description = description;
+      ideaToUpdate.lastUpdated = new Date().toString();
+    }  
+    setIdeas(updatedIdeas);
    }
 
   return (

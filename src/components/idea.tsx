@@ -48,6 +48,7 @@ export default function IdeaCard(props: IdeaProps) {
   const updateDesc = (newDesc: string) => {
     setDesc(newDesc);
     setEditDesc(false);
+    props.handleUpdate(props.idea.id, title, newDesc);
   }
 
   return (
