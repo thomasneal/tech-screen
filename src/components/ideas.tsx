@@ -26,9 +26,11 @@ export default function Ideas() {
   }, []);
 
   useEffect(() => {
+    console.log("effect called");
     if (ideasLoaded) {
       localStorage.setItem("ideas", JSON.stringify(ideas));
     }
+    console.log("effect ideas", ideas);
     
   }, [ideas, ideasLoaded]);
 
@@ -36,7 +38,7 @@ export default function Ideas() {
     
     return (
       <>
-       <IdeaCard key={newIdea.id} idea={newIdea} handleDelete={() => handleDelete(newIdea.id)} />
+       <IdeaCard key={newIdea.id} idea={newIdea} handleDelete={() => handleDelete(newIdea.id)} handleUpdate={handleUpdate} />
       </> 
     );
   }
@@ -58,10 +60,23 @@ export default function Ideas() {
     setIdeas(filteredIdeas);
    }
 
+   const handleUpdate = (id: string, title: string, description: string) => {
+    
+    const ideaIndex = ideas.findIndex(
+      (idea) => idea.id === id
+    )
+
+    if (ideaIndex !== -1) {
+      ideas[ideaIndex] = { id: id, title: title, description: description, lastUpdated: new Date().toString()}
+    }
+    console.log("handleUpdate ideas", ideas);  
+    setIdeas(ideas);
+   }
+
   return (
     <>
       {ideas && ideas.map((idea) => (
-        <IdeaCard key={idea.id} idea={idea} handleDelete={handleDelete} />
+        <IdeaCard key={idea.id} idea={idea} handleDelete={handleDelete} handleUpdate={handleUpdate} />
       ))}
       {creatingNewIdea ? <NewIdea /> : ""}
       <Button variant="contained" onClick={handleNewIdea}>New Idea</Button>

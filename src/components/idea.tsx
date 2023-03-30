@@ -6,7 +6,8 @@ import { formatRelativeTime } from "../utils/helpers";
 
 type IdeaProps = {
   idea: Idea,
-  handleDelete: (id: string) => void
+  handleDelete: (id: string) => void,
+  handleUpdate: (id: string, title: string, description: string) => void
 }
 
 export default function IdeaCard(props: IdeaProps) {
@@ -41,6 +42,7 @@ export default function IdeaCard(props: IdeaProps) {
   const updateTitle = (newTitle: string) => {
     setTitle(newTitle);
     setEditTitle(false);
+    props.handleUpdate(props.idea.id, newTitle, desc);
   }
 
   const updateDesc = (newDesc: string) => {
