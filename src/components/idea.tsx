@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Card, CardActions, CardContent, Input, Typography, TextField } from '@mui/material';
+import { Button, Card, CardActions, CardContent, Input, Typography, TextField, Alert } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import  { Idea } from '@/types/Idea';
 import { formatRelativeTime } from "../utils/helpers";
@@ -7,7 +7,8 @@ import { formatRelativeTime } from "../utils/helpers";
 type IdeaProps = {
   idea: Idea,
   handleDelete: (id: string) => void,
-  handleUpdate: (id: string, title: string, description: string) => void
+  handleUpdate: (id: string, title: string, description: string) => void,
+  showAlert: boolean
 }
 
 export default function IdeaCard(props: IdeaProps) {
@@ -16,6 +17,7 @@ export default function IdeaCard(props: IdeaProps) {
   const [desc, setDesc] = useState(props.idea.description);
   const [editDesc, setEditDesc] = useState(false);
   const [wordCount, setWordCount] = useState(0);
+  const [showAlert, setShowAlert] = useState(false);
 
   function TitleInput(props: any) {
     return (
@@ -43,6 +45,7 @@ export default function IdeaCard(props: IdeaProps) {
     setTitle(newTitle);
     setEditTitle(false);
     props.handleUpdate(props.idea.id, newTitle, desc);
+    setShowAlert(true);
   }
 
   const updateDesc = (newDesc: string) => {
@@ -71,6 +74,9 @@ export default function IdeaCard(props: IdeaProps) {
           Delete
         </Button>
       </CardActions>
+      { showAlert ?
+        <Alert onClose={() => setShowAlert(false)}>Idea updated successfully</Alert> : ''
+      }
     </Card>
   );
 }
