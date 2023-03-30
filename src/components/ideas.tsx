@@ -75,17 +75,14 @@ export default function Ideas() {
    }
 
   const handleSort = (sort: string) => {
-    console.log("sort by: " + sort);
     setSort(sort);
     if (sort === 'alpha') {
-      console.log("alpha found");
-      setIdeas(ideas.sort((a, b) => (a.title < b.title) ? 1 : -1));
+      setIdeas(ideas.sort((a, b) => (a.title > b.title) ? 1 : -1));
     }
     
-    // if (sort === 'alpha') {
-    //   console.log("alpha found");
-    //   setIdeas(ideas.sort((a, b) => (a.title < b.title) ? 1 : -1));
-    // }
+    if (sort === 'created') {
+      setIdeas(ideas.sort((a, b) => (new Date(a.lastUpdated) > new Date(b.lastUpdated)) ? 1 : -1));
+    }
   }
 
   return (
