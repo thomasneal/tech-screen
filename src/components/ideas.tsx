@@ -36,7 +36,7 @@ export default function Ideas() {
     
     return (
       <>
-       <IdeaCard key={newIdea.id} idea={newIdea} handleDelete={() => handleDelete(newIdea.id)} />
+       <IdeaCard key={newIdea.id} idea={newIdea} handleDelete={() => handleDelete(newIdea.id)} handleUpdate={handleUpdate} />
       </> 
     );
   }
@@ -58,10 +58,25 @@ export default function Ideas() {
     setIdeas(filteredIdeas);
    }
 
+   const handleUpdate = (id: string, title: string, description: string) => {
+    
+    const updatedIdeas = [...ideas];
+    const ideaToUpdate = updatedIdeas.find(
+      (idea) => idea.id === id
+    )
+
+    if (ideaToUpdate) {
+      ideaToUpdate.title = title;
+      ideaToUpdate.description = description;
+      ideaToUpdate.lastUpdated = new Date().toString();
+    }  
+    setIdeas(updatedIdeas);
+   }
+
   return (
     <>
       {ideas && ideas.map((idea) => (
-        <IdeaCard key={idea.id} idea={idea} handleDelete={handleDelete} />
+        <IdeaCard key={idea.id} idea={idea} handleDelete={handleDelete} handleUpdate={handleUpdate} />
       ))}
       {creatingNewIdea ? <NewIdea /> : ""}
       <Button variant="contained" onClick={handleNewIdea}>New Idea</Button>
