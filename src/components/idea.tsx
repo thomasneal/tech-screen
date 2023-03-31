@@ -8,7 +8,6 @@ type IdeaProps = {
   idea: Idea,
   handleDelete: (id: string) => void,
   handleUpdate: (id: string, title: string, description: string) => void,
-  showAlert: boolean
 }
 
 export default function IdeaCard(props: IdeaProps) {
