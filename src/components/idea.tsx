@@ -28,25 +28,38 @@ export default function IdeaCard(props: IdeaProps) {
   function DescriptionInput(props: any) {
     return (
       <>
-      <TextField name="description" onBlur={(e) => updateDesc(e.target.value)} defaultValue={props.desc} multiline />
+      <TextField
+        name="description"
+        //autoFocus={true}
+        rows={3}
+        inputProps={{ maxLength: 140 }}
+        onBlur={(e) => updateDesc(e.target.value)}
+        defaultValue={props.desc}
+        multiline
+        onChange={(e) => checkWordCount(e.target.value.length)}
+      />
+      <p>{140 - wordCount} characters remaining</p>
       </>
     );
   }
 
-  const checkWordCount = (val: any) => {
-    console.log("count", val.length);
+  const checkWordCount = (val: number) => {
+    console.log("checking....");
     setWordCount(val);
-    
   }
 
   const updateTitle = (newTitle: string) => {
-    setTitle(newTitle);
+    (newTitle === '') ? setTitle("Title") : setTitle(newTitle); 
     setEditTitle(false);
     props.handleUpdate(props.idea.id, newTitle, desc);
   }
 
   const updateDesc = (newDesc: string) => {
-    setDesc(newDesc);
+    //(newDesc === '') ? setDesc("Description") : setDesc(newDesc); 
+    if (newDesc === '') {
+      newDesc = "Description";
+    }
+    setDesc(newDesc); 
     setEditDesc(false);
     props.handleUpdate(props.idea.id, title, newDesc);
   }
