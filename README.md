@@ -1,6 +1,16 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+## What is this project?
+
+- here is CS tech test to build an trello-style board
+
+[url](idea.vercel.app)
+
+## Scripts
+
+## Developer Notes
+
+- if I had more time I woudl have done X, Y and Z
 
 First, run the development server:
 

@@ -5,7 +5,10 @@ import { Idea } from "@/types/Idea";
 import IdeaCard from "./idea";
 import styles from "@/styles/Ideas.module.css";
 
+type SortOptions = 'created' | 'alpha'
+
 export default function Ideas() {
+  // STATE / HOOKS
   const [ideasLoaded, setIdeasLoaded] = useState(false);
   const [creatingNewIdea, setCreatingNewIdea] = useState(false);
   const [newIdea, setNewIdea] = useState<Idea>({
@@ -14,13 +17,14 @@ export default function Ideas() {
     description: "description",
     lastUpdated: new Date().toString(),
   });
-  const [sort, setSort] = useState("created");
+  const [sort, setSort] = useState<SortOptions>("created");
   const [ideas, setIdeas] = useState<Idea[]>([]);
 
+  // METHODS + EFFECTS
   useEffect(() => {
     const stringToParse = localStorage.getItem("ideas");
     if (stringToParse) {
-      const itemsArray = JSON.parse(stringToParse);
+      const itemsArray = JSON.parse(stringToParse) as Idea[];
       setIdeas(itemsArray);
       setIdeasLoaded(true);
     }
@@ -34,15 +38,13 @@ export default function Ideas() {
   }, [ideas, ideasLoaded]);
 
   function NewIdea() {
-    
     return (
-      <>
        <IdeaCard key={newIdea.id} idea={newIdea} handleDelete={() => handleDelete(newIdea.id)} handleUpdate={handleUpdate} />
-      </> 
     );
   }
   
   const handleNewIdea = () => {
+    // maybe use useReducer
     setCreatingNewIdea(true);
     setIdeas([...ideas, newIdea]); 
     setNewIdea({
@@ -60,9 +62,23 @@ export default function Ideas() {
   }
 
    const handleUpdate = (id: string, title: string, description: string) => {
+    // const updated = ideas.map(idea => {
+    //   if (idea.id === id) {
+    //     return {
+    //       ...idea,
+    //       title,
+    //       description,
+    //       lastUpdated: new Date().toString(),
+    //     }
+    //   }
+
+    //   return idea;
+    // }) 
+
+    // setIdeas(updated);
     
     const updatedIdeas = [...ideas];
-    const ideaToUpdate = updatedIdeas.find(
+     const ideaToUpdate = updatedIdeas.find(
       (idea) => idea.id === id
     )
 
@@ -74,7 +90,7 @@ export default function Ideas() {
     setIdeas(updatedIdeas);
    }
 
-  const handleSort = (sort: string) => {
+  const handleSort = (sort: SortOptions) => {
     setSort(sort);
     if (sort === 'alpha') {
       setIdeas(ideas.sort((a, b) => (a.title > b.title) ? 1 : -1));
@@ -85,6 +101,7 @@ export default function Ideas() {
     }
   }
 
+  // JSX
   return (
     <section>
       <FormControl sx={{width: 150, display: 'block'}}>

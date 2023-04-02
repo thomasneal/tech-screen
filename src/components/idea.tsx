@@ -15,33 +15,6 @@ export default function IdeaCard(props: IdeaProps) {
   const [editTitle, setEditTitle] = useState(false);
   const [desc, setDesc] = useState(props.idea.description);
   const [editDesc, setEditDesc] = useState(false);
-  const [wordCount, setWordCount] = useState(0);
-
-  function TitleInput(props: any) {
-    return (
-      <>
-      <Input autoFocus={true} type="text" name="title" onBlur={(e) => updateTitle(e.target.value)} defaultValue={title} />
-      </>
-    );
-  }
-
-  function DescriptionInput(props: any) {
-    return (
-      <>
-      <TextField
-        name="description"
-        //autoFocus={true}
-        rows={3}
-        inputProps={{ maxLength: 140 }}
-        onBlur={(e) => updateDesc(e.target.value)}
-        defaultValue={props.desc}
-        multiline
-        onChange={(e) => checkWordCount(e.target.value.length)}
-      />
-      <p>{140 - wordCount} characters remaining</p>
-      </>
-    );
-  }
 
   const checkWordCount = (val: number) => {
     console.log("checking....");
@@ -50,16 +23,16 @@ export default function IdeaCard(props: IdeaProps) {
 
   const updateTitle = (newTitle: string) => {
     (newTitle === '') ? setTitle("Title") : setTitle(newTitle); 
-    setEditTitle(false);
+    // setEditTitle(false);
     props.handleUpdate(props.idea.id, newTitle, desc);
   }
 
   const updateDesc = (newDesc: string) => {
     //(newDesc === '') ? setDesc("Description") : setDesc(newDesc); 
     if (newDesc === '') {
-      newDesc = "Description";
+      newDesc = "Description"; // mutating
     }
-    setDesc(newDesc); 
+    setDesc(newDesc);
     setEditDesc(false);
     props.handleUpdate(props.idea.id, title, newDesc);
   }
@@ -67,12 +40,25 @@ export default function IdeaCard(props: IdeaProps) {
   return (
     <Card variant="outlined" sx={{ width: 275, height: 275 }}>
       <CardContent>
-        <Typography variant="h2" sx={{ fontSize: 20 }} gutterBottom onClick={editTitle => setEditTitle(true)}>
-          {editTitle ? <TitleInput title={title} /> : title}
-        </Typography>
-        <Typography variant="body1" component="div" color="text.secondary" sx={{ mb: 1.5 }} onClick={editDesc => setEditDesc(true)}>
-        {editDesc ? <DescriptionInput desc={desc} /> : desc}
-        </Typography>
+        {editTitle ? <Input autoFocus type="text" name="title" onChange={(e) => updateTitle(e.target.value)} onBlur={() => setEditTitle(false)} defaultValue={title} /> : <Typography variant="h2" sx={{ fontSize: 20 }} gutterBottom onClick={editTitle => setEditTitle(true)}>{title}</Typography>}
+        
+        {editDesc ? 
+        <>
+          <TextField
+          name="description"
+          //autoFocus={true}
+          rows={3}
+          inputProps={{ maxLength: 140 }}
+          onBlur={(e) => updateDesc(e.target.value)}
+          defaultValue={desc}
+          multiline
+          onChange={(e) => setDesc(e.target.value)}
+        />
+        <p>{140 - desc.length} characters remaining</p>
+        </>
+        : 
+        <Typography variant="body1" component="div" color="text.secondary" sx={{ mb: 1.5 }} onClick={editDesc => setEditDesc(true)}>desc</Typography>}
+        
         <Typography variant="body2" color="text.secondary">
           Last Updated: {formatRelativeTime(props.idea.lastUpdated)}
         </Typography>
