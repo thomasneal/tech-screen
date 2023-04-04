@@ -32,15 +32,6 @@ export default function Ideas() {
     }
     
   }, [ideas, ideasLoaded]);
-
-  function NewIdea() {
-    
-    return (
-      <>
-       <IdeaCard key={newIdea.id} idea={newIdea} handleDelete={() => handleDelete(newIdea.id)} handleUpdate={handleUpdate} />
-      </> 
-    );
-  }
   
   const handleNewIdea = () => {
     setCreatingNewIdea(true);
@@ -104,7 +95,7 @@ export default function Ideas() {
         {ideas && ideas.map((idea) => (
           <IdeaCard key={idea.id} idea={idea} handleDelete={handleDelete} handleUpdate={handleUpdate} />
         ))}
-        {creatingNewIdea ? <NewIdea /> : ""}
+        {creatingNewIdea && <IdeaCard key={newIdea.id} idea={newIdea} handleDelete={() => handleDelete(newIdea.id)} handleUpdate={handleUpdate} />}
       </section>
       <Button variant="contained" onClick={handleNewIdea}>New Idea</Button>
     </section>
