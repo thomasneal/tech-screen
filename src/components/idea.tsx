@@ -33,14 +33,14 @@ export default function IdeaCard({idea, handleDelete, handleUpdate}: IdeaProps) 
     <Card variant="outlined" sx={{ width: 275, height: 300 }}>
       <CardContent>
         <Typography variant="h2" sx={{ fontSize: 20 }} gutterBottom onClick={() => setEditTitle(true)}>
-          {editTitle ? <Input autoFocus={true} type="text" name="title" onChange={(e) => updateTitle(e.target.value)} onBlur={(e) => setEditTitle(false)} defaultValue={title} /> : title}
+          {editTitle ? <Input autoFocus type="text" name="title" onChange={(e) => updateTitle(e.target.value)} onBlur={(e) => setEditTitle(false)} defaultValue={title} /> : title}
         </Typography>
         <Typography variant="body1" component="div" color="text.secondary" sx={{ mb: 1.5 }} onClick={() => setEditDesc(true)}>
         {editDesc ? 
           <>
             <TextField
               name="description"
-              //autoFocus={true}
+              autoFocus
               rows={3}
               inputProps={{ maxLength: 140 }}
               onBlur={() => setEditDesc(false)}
