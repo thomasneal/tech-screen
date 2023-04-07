@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, RefObject } from "react";
 import {v4 as uuidv4} from 'uuid';
 import { Button, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import { Idea } from "@/types/Idea";
@@ -18,7 +18,8 @@ export default function Ideas() {
   });
   const [sort, setSort] = useState<SortOptions>("created");
   const [ideas, setIdeas] = useState<Idea[]>([]);
-  
+  const ref = useRef<HTMLInputElement | null>(null);
+  //const ref = useRef(null) as RefObject<HTMLInputElement>;
 
   useEffect(() => {
     const stringToParse = localStorage.getItem("ideas");
@@ -35,6 +36,11 @@ export default function Ideas() {
     }
     
   }, [ideas, ideasLoaded]);
+
+  useEffect(() => {
+    console.log('called focus ref');
+    if(ref.current) ref.current.focus();
+  }, [setCreatingNewIdea])
   
   const handleNewIdea = () => {
     setCreatingNewIdea(true);
@@ -46,6 +52,12 @@ export default function Ideas() {
       lastUpdated: new Date().toString()
     });
     setCreatingNewIdea(false);
+
+    console.log("ref", ref);
+    if (ref.current) {
+      ref.current.focus();
+    }
+    
   }
 
   const handleDelete = (id: string) => {
@@ -98,7 +110,14 @@ export default function Ideas() {
         {ideas && ideas.map((idea) => (
           <IdeaCard key={idea.id} idea={idea} handleDelete={handleDelete} handleUpdate={handleUpdate} />
         ))}
-        {creatingNewIdea && <IdeaCard key={newIdea.id} idea={newIdea} handleDelete={() => handleDelete(newIdea.id)} handleUpdate={handleUpdate} />}
+        {creatingNewIdea &&
+          <IdeaCard key={newIdea.id} idea={newIdea}
+            handleDelete={() => handleDelete(newIdea.id)}
+            handleUpdate={handleUpdate}
+            ref={ref}
+            //handleRef={ideaRef}
+          />
+        }
       </section>
       <Button variant="contained" onClick={handleNewIdea}>New Idea</Button>
     </section>
