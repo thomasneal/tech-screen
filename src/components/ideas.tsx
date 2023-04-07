@@ -1,9 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {v4 as uuidv4} from 'uuid';
 import { Button, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import { Idea } from "@/types/Idea";
 import IdeaCard from "./idea";
 import styles from "@/styles/Ideas.module.css";
+
+type SortOptions = "alpha" | "created";
 
 export default function Ideas() {
   const [ideasLoaded, setIdeasLoaded] = useState(false);
@@ -14,8 +16,9 @@ export default function Ideas() {
     description: "description",
     lastUpdated: new Date().toString(),
   });
-  const [sort, setSort] = useState("created");
+  const [sort, setSort] = useState<SortOptions>("created");
   const [ideas, setIdeas] = useState<Idea[]>([]);
+  
 
   useEffect(() => {
     const stringToParse = localStorage.getItem("ideas");
@@ -32,15 +35,6 @@ export default function Ideas() {
     }
     
   }, [ideas, ideasLoaded]);
-
-  function NewIdea() {
-    
-    return (
-      <>
-       <IdeaCard key={newIdea.id} idea={newIdea} handleDelete={() => handleDelete(newIdea.id)} handleUpdate={handleUpdate} />
-      </> 
-    );
-  }
   
   const handleNewIdea = () => {
     setCreatingNewIdea(true);
@@ -74,7 +68,7 @@ export default function Ideas() {
     setIdeas(updatedIdeas);
    }
 
-  const handleSort = (sort: string) => {
+  const handleSort = (sort: SortOptions) => {
     setSort(sort);
     if (sort === 'alpha') {
       setIdeas(ideas.sort((a, b) => (a.title > b.title) ? 1 : -1));
@@ -94,7 +88,7 @@ export default function Ideas() {
           id="sort"
           value={sort}
           label="Sort"
-          onChange={(e) => handleSort(e.target.value)}
+          onChange={(e) => handleSort(e.target.value as SortOptions)}
         >
           <MenuItem value={"created"}>Date Created</MenuItem>
           <MenuItem value={"alpha"}>Alphabetically</MenuItem>
@@ -104,7 +98,7 @@ export default function Ideas() {
         {ideas && ideas.map((idea) => (
           <IdeaCard key={idea.id} idea={idea} handleDelete={handleDelete} handleUpdate={handleUpdate} />
         ))}
-        {creatingNewIdea ? <NewIdea /> : ""}
+        {creatingNewIdea && <IdeaCard key={newIdea.id} idea={newIdea} handleDelete={() => handleDelete(newIdea.id)} handleUpdate={handleUpdate} />}
       </section>
       <Button variant="contained" onClick={handleNewIdea}>New Idea</Button>
     </section>
