@@ -9,7 +9,6 @@ type SortOptions = "alpha" | "created";
 
 export default function Ideas() {
   const [ideasLoaded, setIdeasLoaded] = useState(false);
-  const [creatingNewIdea, setCreatingNewIdea] = useState(false);
   const [newIdea, setNewIdea] = useState<Idea>({
     id: uuidv4(),
     title: 'title',
@@ -37,7 +36,6 @@ export default function Ideas() {
   }, [ideas, ideasLoaded]);
   
   const handleNewIdea = () => {
-    setCreatingNewIdea(true);
     setIdeas([...ideas, newIdea]); 
     setNewIdea({
       id: uuidv4(),
@@ -45,7 +43,6 @@ export default function Ideas() {
       description: "description",
       lastUpdated: new Date().toString()
     });
-    setCreatingNewIdea(false);
   }
 
   const handleDelete = (id: string) => {
@@ -98,7 +95,6 @@ export default function Ideas() {
         {ideas && ideas.map((idea) => (
           <IdeaCard key={idea.id} idea={idea} handleDelete={handleDelete} handleUpdate={handleUpdate} />
         ))}
-        {creatingNewIdea && <IdeaCard key={newIdea.id} idea={newIdea} handleDelete={() => handleDelete(newIdea.id)} handleUpdate={handleUpdate} />}
       </section>
       <Button variant="contained" onClick={handleNewIdea}>New Idea</Button>
     </section>
