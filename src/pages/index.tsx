@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import Ideas from '@/components/ideas'
 import { Typography } from '@mui/material'
-import styles from '@/styles/Home.module.css'
+import styles from '@/styles/Home.module.scss'
 
 
 export default function Home() {
@@ -14,7 +14,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <main className={styles.main}>
-        <Typography variant="h1">Ideas</Typography>
+        <h1>Ideas</h1>
         <Ideas />
       </main>
     </>

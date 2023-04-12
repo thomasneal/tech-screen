@@ -1,0 +1,33 @@
+.ideasContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+  row-gap: 2rem;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 20px 0px;
+} 
+
+.sortLabel {
+  margin-right: 20px;
+  font-size: 1.2rem;
+}
+
+.sortSelect {
+  font-size: 1.2rem;
+  background-color: var(--background-color);
+  padding: 10px;
+  font-weight: 300;
+  font-family: var(--font-stack);
+
+  option {
+    color: red;
+    
+  }
+}
+
+.primary {
+  background-color: #14453D;
+  color: white;
+  font-size: 1rem;
+}

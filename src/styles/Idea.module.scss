@@ -1,0 +1,43 @@
+.idea {
+  border: 1px solid var(--green);
+  background-color: var(--card-bg);
+  padding: 20px;
+  width: 23%;
+  height: 280px;
+  position: relative;
+
+  input {
+    width: 100%;
+  }
+
+  textarea {
+    width: 100%;
+    height: 100px;
+  }
+
+  .desc {
+    height: 100px;
+    margin-bottom: 1rem;
+  }
+
+  .updated {
+    color: grey;
+    font-size: .9rem;
+    margin-bottom: 20px;
+  }
+
+  .alert {
+    background-color: var(--success);
+    border: 1px solid black;
+    padding: 10px;
+    position: absolute;
+    bottom: 65px;
+    cursor: pointer;
+  }
+
+  .delete {
+    position: absolute;
+    bottom: 20px;
+  }
+}
+

@@ -1,9 +1,9 @@
-import { useState, useEffect, useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import {v4 as uuidv4} from 'uuid';
 import { Button, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import { Idea } from "@/types/Idea";
 import IdeaCard from "./idea";
-import styles from "@/styles/Ideas.module.css";
+import styles from "@/styles/Ideas.module.scss";
 
 
 type SortOptions = "alpha" | "updated";
@@ -152,25 +152,21 @@ export default function Ideas() {
 
   return (
     <section>
-      <FormControl sx={{width: 150, display: 'block'}}>
-        <InputLabel id="sort-label">Sort</InputLabel>
-        <Select
-          labelId="sort-label"
+        <label className={styles.sortLabel}>Sort</label>
+        <select className={styles.sortSelect}
           id="sort"
           value={state.sort}
-          label="Sort"
           onChange={(e) => handleSort(e.target.value as SortOptions)}
         >
-          <MenuItem value={"updated"}>Last Updated</MenuItem>
-          <MenuItem value={"alpha"}>Alphabetically</MenuItem>
-        </Select>
-      </FormControl>
+          <option value={"updated"}>Last Updated</option>
+          <option value={"alpha"}>Alphabetically</option>
+        </select>
       <section className={styles.ideasContainer}>
         {state.ideas && state.ideas.map((idea) => (
           <IdeaCard key={idea.id} idea={idea} handleDelete={handleDelete} handleUpdate={handleUpdate} />
         ))}
       </section>
-      <Button variant="contained" onClick={handleNewIdea}>New Idea</Button>
+      <button className={styles.primary} onClick={handleNewIdea}>New Idea</button>
     </section>
   );
 }

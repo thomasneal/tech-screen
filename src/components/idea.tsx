@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import { Button, Card, CardActions, CardContent, Input, Typography, TextField, Alert } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
 import  { Idea } from '@/types/Idea';
 import { formatRelativeTime } from "../utils/helpers";
+import styles from "@/styles/Idea.module.scss"
 
 type IdeaProps = {
   idea: Idea,
@@ -33,43 +32,38 @@ export default function IdeaCard({idea, handleDelete, handleUpdate}: IdeaProps) 
   }
 
   return (
-    <Card variant="outlined" sx={{ width: 275, height: 300 }}>
-      <CardContent>
-        <Typography variant="h2" sx={{ fontSize: 20 }} gutterBottom onClick={() => setEditTitle(true)}>
-          {editTitle ? <Input autoFocus type="text" name="title" onChange={(e) => updateTitle(e.target.value)} onBlur={(e) => setEditTitle(false)} defaultValue={title} /> : title}
-        </Typography>
-        <Typography variant="body1" component="div" color="text.secondary" sx={{ mb: 1.5 }} onClick={() => setEditDesc(true)}>
+    <div className={styles.idea}>
+        {editTitle ? 
+          <input autoFocus type="text" name="title" onChange={(e) => updateTitle(e.target.value)} onBlur={(e) => setEditTitle(false)} defaultValue={title} /> : <h2 onClick={() => setEditTitle(true)}>{title}</h2>
+        }
         {editDesc ? 
           <>
-            <TextField
+            <textarea
               name="description"
               autoFocus
               rows={3}
-              inputProps={{ maxLength: 140 }}
+              //inputProps={{ maxLength: 140 }}
               onBlur={() => setEditDesc(false)}
               defaultValue={idea.description}
-              multiline
+              //multiline
               onChange={(e) => updateDesc(e.target.value)}
-            />
+            ></textarea>
             <p>{140 - desc.length} characters remaining</p>
           </> : 
-          desc
+          <p className={styles.desc} onClick={() => setEditDesc(true)}>{desc}</p>
         }
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
+        <p className={styles.updated}>
           Last Updated: {formatRelativeTime(idea.lastUpdated)}
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Button
-          variant="outlined" startIcon={<DeleteIcon />}
+        </p>
+        <button className={styles.delete}
           onClick={() => handleDelete(idea.id)}>
           Delete
-        </Button>
-      </CardActions>
+        </button>
       { showAlert &&
-        <Alert onClose={() => setShowAlert(false)}>Idea updated successfully</Alert>
+        <div className={styles.alert} onClick={() => setShowAlert(false)}>
+          <p>Idea updated successfully</p>
+        </div>
       }
-    </Card>
+    </div>
   );
 }
