@@ -1,6 +1,5 @@
 import { useEffect, useReducer } from "react";
 import {v4 as uuidv4} from 'uuid';
-import { Button, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import { Idea } from "@/types/Idea";
 import IdeaCard from "./idea";
 import styles from "@/styles/Ideas.module.scss";
@@ -50,7 +49,7 @@ type Actions =
 
 const generateNewIdea = (): Idea => ({
   id: uuidv4(),
-  title: "title",
+  title: "",
   description: "description",
   lastUpdated: new Date().toString(),
 });

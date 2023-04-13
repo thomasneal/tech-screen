@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import  { Idea } from '@/types/Idea';
 import { formatRelativeTime } from "../utils/helpers";
 import styles from "@/styles/Idea.module.scss"
@@ -15,6 +15,10 @@ export default function IdeaCard({idea, handleDelete, handleUpdate}: IdeaProps) 
   const [desc, setDesc] = useState(idea.description);
   const [editDesc, setEditDesc] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
+
+  useEffect(() => {
+    if (title === "") setEditTitle(true);
+  }, [title])
 
   const updateTitle = (newTitle: string) => {
     (newTitle === '') ? setTitle("Title") : setTitle(newTitle); 
@@ -34,7 +38,10 @@ export default function IdeaCard({idea, handleDelete, handleUpdate}: IdeaProps) 
   return (
     <div className={styles.idea}>
         {editTitle ? 
-          <input autoFocus type="text" name="title" onChange={(e) => updateTitle(e.target.value)} onBlur={(e) => setEditTitle(false)} defaultValue={title} /> : <h2 onClick={() => setEditTitle(true)}>{title}</h2>
+          <input autoFocus={true} type="text" name="title" placeholder={"Title"} onChange={(e) => updateTitle(e.target.value)}
+          onBlur={(e) => setEditTitle(false)}
+          defaultValue={title} /> : 
+          <h2 onClick={() => setEditTitle(true)}>{title}</h2>
         }
         {editDesc ? 
           <>
@@ -42,10 +49,9 @@ export default function IdeaCard({idea, handleDelete, handleUpdate}: IdeaProps) 
               name="description"
               autoFocus
               rows={3}
-              //inputProps={{ maxLength: 140 }}
+              maxLength={140}
               onBlur={() => setEditDesc(false)}
               defaultValue={idea.description}
-              //multiline
               onChange={(e) => updateDesc(e.target.value)}
             ></textarea>
             <p>{140 - desc.length} characters remaining</p>
