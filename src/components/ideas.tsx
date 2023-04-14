@@ -74,7 +74,7 @@ function reducer(state: State, action: Actions) {
       return {
         ...state,
         ideas: action.ideas,
-        ideasLoaded: true,
+        ideasLoaded: action.ideas.length > 0 ? true : false,
       };
     }
     case "UPDATE_IDEA": {
@@ -133,7 +133,7 @@ export default function Ideas() {
   }, []);
 
   useEffect(() => {
-    if (state.ideasLoaded) {
+    if (state.ideasLoaded || state.ideas.length > 0) {
       localStorage.setItem("ideas", JSON.stringify(state.ideas));
     }
     
