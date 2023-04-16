@@ -1,4 +1,3 @@
-
 import { formatDistance } from "date-fns";
 
 export function formatRelativeTime(dateString: string) {
