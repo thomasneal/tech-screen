@@ -1,4 +1,5 @@
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event';
 import Ideas from './ideas'
 
 describe('Ideas', () => {
@@ -12,17 +13,34 @@ describe('Ideas', () => {
     expect(button).toBeInTheDocument();
   })
 
-  it('creating a new Idea adds a new item to Ideas', () => {
-   const { container }  = render(<Ideas />)
+  it('should delete an Idea', async () => {
+    const user = userEvent.setup();
+    render(<Ideas />)
 
-    const button = screen.getByRole('button', {
+    const newButton = screen.getByRole('button', {
       name: /New Idea/i,
     })
 
-    fireEvent.click(button);
+    expect(
+      screen.queryByRole("button", {
+        name: /Delete/i,
+      })
+    ).not.toBeInTheDocument();
 
-    console.log(container);
+    await user.click(newButton);
 
-    expect(button).toBeInTheDocument();
+    const deleteButton = screen.getByRole("button", {
+      name: /Delete/i,
+    });
+
+    expect(deleteButton).toBeInTheDocument();
+
+    await user.click(deleteButton);
+
+    expect(
+      screen.queryByRole("button", {
+        name: /Delete/i,
+      })
+    ).not.toBeInTheDocument();
   })
 })
