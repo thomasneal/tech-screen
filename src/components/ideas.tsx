@@ -116,8 +116,6 @@ function reducer(state: State, action: Actions) {
         ideas: sortedIdeas
       }
     }
-    default:
-      return state;
   }
 }
 
