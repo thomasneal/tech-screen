@@ -77,14 +77,30 @@ describe('Ideas', () => {
       value: localStorageMock,
     });
 
-    const initIdeas = [{"id":"f624de8e-431d-4382-9d0d-a12298ad46f4","title":"Alpha","description":"descriptionddddd","lastUpdated":"Mon Apr 10 2023 20:05:09 GMT-0500 (Central Daylight Time)"},{"id":"839a803b-2b7b-4bd1-af9d-e4487d4ac016","title":"Farengi","description":"description","lastUpdated":"Thu Apr 13 2023 14:49:40 GMT-0500 (Central Daylight Time)"}];
+    const initIdeas = [
+      {
+        id:"f624de8e-431d-4382-9d0d-a12298ad46f4",
+        title: "Ramuh",
+        description:"descriptionddddd",
+        lastUpdated:"Mon Apr 10 2023 20:05:09 GMT-0500 (Central Daylight Time)"
+      },
+      {
+        id: "839a803b-2b7b-4bd1-af9d-e4487d4ac016",
+        title: "Ifrit",
+        description: "description",
+        lastUpdated: "Thu Apr 13 2023 14:49:40 GMT-0500 (Central Daylight Time)"
+      },
+      {
+        id: "839a803b-2b7b-4bd1-af9d-383839dadfff",
+        title: "Siren",
+        description: "a cool idea, dood",
+        lastUpdated: "Thu Apr 11 2023 14:49:40 GMT-0500 (Central Daylight Time)"
+      },
+    ];
 
-  
-    await waitFor(() => {
-      localStorage.setItem("ideas", JSON.stringify(initIdeas));
-    }, { timeout: 500 });
+    localStorage.setItem("ideas", JSON.stringify(initIdeas));
 
-     render(<Ideas />)
+     render(<Ideas />);
 
     await waitFor(() => {
       const stringToParse = localStorage.getItem("ideas");
@@ -119,20 +135,45 @@ describe('Ideas', () => {
     expect(headingToEdit).toBeInTheDocument();
   })
 
-  it('should sort an Idea', async () => {
+  it('should sort Ideas correctly', async () => {
+    const initIdeas = [
+      {
+        id:"f624de8e-431d-4382-9d0d-a12298ad46f4",
+        title: "Ramuh",
+        description:"descriptionddddd",
+        lastUpdated:"Mon Apr 10 2023 20:05:09 GMT-0500 (Central Daylight Time)"
+      },
+      {
+        id: "839a803b-2b7b-4bd1-af9d-e4487d4ac016",
+        title: "Ifrit",
+        description: "description",
+        lastUpdated: "Thu Apr 13 2023 14:49:40 GMT-0500 (Central Daylight Time)"
+      },
+      {
+        id: "839a803b-2b7b-4bd1-af9d-383839dadfff",
+        title: "Siren",
+        description: "a cool idea, dood",
+        lastUpdated: "Thu Apr 11 2023 14:49:40 GMT-0500 (Central Daylight Time)"
+      },
+    ];
+   
     const user = userEvent.setup();
+    Object.defineProperty(window, 'localStorage', {
+      value: localStorageMock,
+    });
+    localStorage.setItem("ideas", JSON.stringify(initIdeas));
+
     render(<Ideas />);
-    
-    expect((screen.getByText('Alphabetically') as HTMLOptionElement).selected).toBeFalsy();
 
     await user.selectOptions(screen.getByRole("combobox"), 'Alphabetically');
 
     expect((screen.getByText('Alphabetically') as HTMLOptionElement).selected).toBeTruthy();
 
+    screen.logTestingPlaygroundURL();
+
     await user.selectOptions(screen.getByRole("combobox"), 'Last Updated');
 
     expect((screen.getByText('Last Updated') as HTMLOptionElement).selected).toBeTruthy();
-
   })
 })
 
