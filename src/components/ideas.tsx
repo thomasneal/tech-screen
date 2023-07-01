@@ -8,7 +8,6 @@ import styles from "@/styles/Ideas.module.scss";
 type SortOptions = "alpha" | "updated";
 
 type State = {
-  ideasLoaded: boolean,
   newIdea: Idea,
   sort: SortOptions,
   ideas: Idea[]
@@ -55,7 +54,6 @@ const generateNewIdea = (): Idea => ({
 });
 
 const initialState = {
-  ideasLoaded: false,
   newIdea: generateNewIdea(),
   sort: "updated" as const,
   ideas: []
@@ -74,7 +72,6 @@ function reducer(state: State, action: Actions) {
       return {
         ...state,
         ideas: action.ideas,
-        ideasLoaded: action.ideas.length > 0 ? true : false,
       };
     }
     case "UPDATE_IDEA": {
@@ -116,8 +113,6 @@ function reducer(state: State, action: Actions) {
         ideas: sortedIdeas
       }
     }
-    default:
-      return state;
   }
 }
 
@@ -133,11 +128,10 @@ export default function Ideas() {
   }, []);
 
   useEffect(() => {
-    if (state.ideasLoaded || state.ideas.length > 0) {
+    if (state.ideas.length > 0) {
       localStorage.setItem("ideas", JSON.stringify(state.ideas));
     }
-    
-  }, [state.ideas, state.ideasLoaded]);
+  }, [state.ideas]);
   
   const handleNewIdea = () => dispatch({ type: "CREATE_IDEA" });
 
